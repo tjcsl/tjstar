@@ -1,0 +1,42 @@
+services:
+    postgres:
+        container_name: tjstar_postgres
+        image: postgres:latest
+        networks:
+          - tjstar_net
+        expose:
+          - "5432"
+        environment:
+          - POSTGRES_DB=tjstar
+          - POSTGRES_USER=tjstar
+          - POSTGRES_PASSWORD=pwd
+        volumes:
+          - pgdata:/var/lib/postgresql
+    django:
+        container_name: tjstar
+        image: tjstar
+        build:
+          context: .
+          dockerfile: Dockerfile
+        entrypoint:
+          [
+            "/bin/sh",
+            "-c",
+            "git config --global --add safe.directory /tjstar && \
+            /bin/sh entrypoint.sh"
+          ]
+        ports:
+            - "8000:8000"
+        networks:
+            - tjstar_net
+        volumes:
+            - ./:/tjstar
+
+
+networks:
+  tjstar_net:
+    driver: bridge
+
+volumes:
+  pgdata:
+    name: tjstar-pgdata
