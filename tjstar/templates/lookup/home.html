@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Home - TjStar{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <h1 class="display-4 mb-4">Welcome to tjSTAR</h1>
+        <p class="lead">
+            Official website of the Thomas Jefferson Symposium to Advance Research
+        </p>
+        <p>
+            This website contains a catalog of all tjSTAR presentations for the current school year, allowing you to more easily find and explore the presentations you want to visit.
+        </p>
+        <p class="mt-4">
+            <a href="{% url 'lookup:presentations' %}" class="btn btn-lg btn-primary">
+                Explore Presentations
+            </a>
+        </p>
+    </div>
+</div>
+{% endblock %}

@@ -6,4 +6,5 @@ app_name = "lookup"
 
 urlpatterns = [
     path('', views.home, name="index"),
+    path('presentations/', views.presentations, name="presentations"),
 ]
