@@ -1,4 +1,4 @@
-FROM python:3.15.0a8-alpine3.23
+FROM python:3.13-alpine
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 ENV TZ America/New_York

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Import Error - tjSTAR{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="alert alert-danger" role="alert">
+                <h4 class="alert-heading">Import Error</h4>
+                <p>{{ error }}</p>
+            </div>
+            
+            <div class="mt-3">
+                <a href="{% url 'adminpanel:index' %}" class="btn btn-primary">Back to Import</a>
+                <a href="{% url 'oauth:logout' %}" class="btn btn-danger">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

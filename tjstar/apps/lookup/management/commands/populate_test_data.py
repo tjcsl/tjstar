@@ -170,5 +170,4 @@ class Command(BaseCommand):
 
             self.stdout.write(self.style.SUCCESS(f'Created 30 presentations for {category_code}'))
 
-        total_presentations = Presentation.objects.count()
-        self.stdout.write(self.style.SUCCESS(f'Successfully created {total_presentations} presentations in total!'))
+        self.stdout.write(self.style.SUCCESS(f'Successfully created 270 presentations in total!'))

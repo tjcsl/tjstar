@@ -38,8 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'social_django',
     'tjstar.apps.adminpanel',
     'tjstar.apps.lookup',
+    'tjstar.apps.oauth'
 ]
 
 MIDDLEWARE = [
@@ -65,6 +67,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -128,3 +132,14 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTHENTICATION_BACKENDS = ['tjstar.apps.oauth.backend.IonOauth2', 'django.contrib.auth.backends.ModelBackend']
+
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
+
+LOGIN_URL = "/login/ion/"
+
+# Put these in a seperate file in production
+SOCIAL_AUTH_ION_KEY='855DzibBSkSZAiyhe2zA71s9QPsJtORbSm4buVeA'
+SOCIAL_AUTH_ION_SECRET='M2IHhANYVLm7S2I4YXnUM2eQuLAxmopI0O5ZkGEpMHhYSiqoLl6t7nGYQfMe83jySC3UJJcTD8sOCFE11Cr1okg5sjMpXaoNKediU28XlVVfDy6QcERfR9Embc040u1P'

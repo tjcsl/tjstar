@@ -19,5 +19,8 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('tjstar.apps.lookup.urls', namespace='lookup'))
+    path('', include('tjstar.apps.lookup.urls', namespace='lookup')),
+    path('', include('tjstar.apps.oauth.urls', namespace='oauth')),
+    path('', include('tjstar.apps.adminpanel.urls', namespace='adminpanel')),
+    path('', include('social_django.urls', namespace='social')),
 ]

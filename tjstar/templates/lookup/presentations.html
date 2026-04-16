@@ -51,7 +51,7 @@
                                 {% if timeslot.id in selected_timeslots %}checked{% endif %}
                             >
                             <label class="form-check-label" for="timeslot{{ timeslot.id }}">
-                                {{ timeslot.id }} ({{ timeslot.start_time|time:"H:i" }}-{{ timeslot.end_time|time:"H:i" }})
+                                {{ timeslot.id }} {{ timeslot.start_time|time:"H:i" }}-{{ timeslot.end_time|time:"H:i" }}
                             </label>
                         </div>
                     {% endfor %}
