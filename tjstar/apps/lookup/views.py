@@ -9,7 +9,7 @@ def home(request):
 
 
 def presentations(request):
-    presentations_list = Presentation.objects.all()
+    presentations_list = Presentation.objects.all().order_by('id')
     
     # Search functionality
     search_query = request.GET.get('q', '')

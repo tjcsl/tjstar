@@ -11,7 +11,11 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 import os
+import dj_database_url
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,12 +25,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-3f48w2cs#%h0o-ama5c&e5s=8rt*(vya^)6411ae#jswm&!6+i'
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["activities.tjhsst.edu"]
 
 
 # Application definition
@@ -46,6 +50,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -83,12 +88,18 @@ WSGI_APPLICATION = 'tjstar.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'tjstar',
-        'USER': 'tjstar',
-        'PASSWORD': 'pwd',
-        'HOST': 'postgres',
-        'PORT': '5432',
+        'NAME': os.getenv("DIRECTOR_DATABASE_NAME"),
+        'USER': os.getenv("DIRECTOR_DATABASE_USERNAME"),
+        'PASSWORD': os.getenv("DIRECTOR_DATABASE_PASSWORD"),
+        'HOST': os.getenv("DIRECTOR_DATABASE_HOST"),
+        'PORT': os.getenv("DIRECTOR_DATABASE_PORT"),
     }
+}
+
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
 }
 
 
@@ -126,7 +137,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = 'tjstar/static/'
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+FORCE_SCRIPT_NAME = "/tjstar"
+USE_X_FORWARDED_HOST = True
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -141,5 +156,5 @@ LOGOUT_REDIRECT_URL = "/"
 LOGIN_URL = "/login/ion/"
 
 # Put these in a seperate file in production
-SOCIAL_AUTH_ION_KEY='855DzibBSkSZAiyhe2zA71s9QPsJtORbSm4buVeA'
-SOCIAL_AUTH_ION_SECRET='M2IHhANYVLm7S2I4YXnUM2eQuLAxmopI0O5ZkGEpMHhYSiqoLl6t7nGYQfMe83jySC3UJJcTD8sOCFE11Cr1okg5sjMpXaoNKediU28XlVVfDy6QcERfR9Embc040u1P'
+SOCIAL_AUTH_ION_KEY=os.getenv("SOCIAL_AUTH_ION_KEY")
+SOCIAL_AUTH_ION_SECRET=os.getenv("SOCIAL_AUTH_ION_SECRET")
