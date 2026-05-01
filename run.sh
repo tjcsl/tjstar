@@ -10,7 +10,5 @@ cd /site
 uv sync
 uv run manage.py collectstatic --noinput
 uv run manage.py migrate
-echo hihihihihihi
-echo $DIRECTOR_DATABASE_URL
 
 uv run gunicorn tjstar.wsgi -b $HOST:$PORT -w 1

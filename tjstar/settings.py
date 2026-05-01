@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["activities.tjhsst.edu"]
 
@@ -87,14 +87,11 @@ WSGI_APPLICATION = 'tjstar.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv("DIRECTOR_DATABASE_NAME"),
-        'USER': os.getenv("DIRECTOR_DATABASE_USERNAME"),
-        'PASSWORD': os.getenv("DIRECTOR_DATABASE_PASSWORD"),
-        'HOST': os.getenv("DIRECTOR_DATABASE_HOST"),
-        'PORT': os.getenv("DIRECTOR_DATABASE_PORT"),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
 
 STORAGES = {
     "staticfiles": {
@@ -137,11 +134,21 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'tjstar/static/'
+STATIC_URL = '/tjstar/static/'
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 FORCE_SCRIPT_NAME = "/tjstar"
 USE_X_FORWARDED_HOST = True
+
+CSRF_TRUSTED_ORIGINS = ["https://activities.tjhsst.edu"]
+
+SECURE_SSL_REDIRECT = False
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
+SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
+
+CSRF_COOKIE_PATH = "/tjstar/"
+SESSION_COOKIE_PATH = "/tjstar/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -153,7 +160,7 @@ AUTHENTICATION_BACKENDS = ['tjstar.apps.oauth.backend.IonOauth2', 'django.contri
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
-LOGIN_URL = "/login/ion/"
+LOGIN_URL = "/tjstar/login/ion/"
 
 # Put these in a seperate file in production
 SOCIAL_AUTH_ION_KEY=os.getenv("SOCIAL_AUTH_ION_KEY")
