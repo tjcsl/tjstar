@@ -1,72 +1,196 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}tjSTAR{% endblock %}</title>
+    <meta name="description" content="Official website of the Thomas Jefferson Symposium to Advance Research">
+    <meta property="og:title" content="tjSTAR">
+    <meta property="og:description" content="Official website of the Thomas Jefferson Symposium to Advance Research">
+    <meta property="og:image" content="{% static 'images/tjstar.png' %}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="tjSTAR">
+    <meta name="twitter:description" content="Official website of the Thomas Jefferson Symposium to Advance Research">
+    <meta name="twitter:image" content="{% static 'images/tjstar.png' %}">
+    <link rel="icon" type="image/png" href="{% static 'images/tjstar.png' %}">
     
-    <!-- Bootstrap CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
     <style>
+        :root {
+            --site-bg: #f4ebdf;
+            --site-surface: #fffaf4;
+            --site-surface-strong: #fffdf8;
+            --site-border: #e7d9c7;
+            --site-text: #2c2831;
+            --site-muted: #6d6b70;
+            --site-purple: #dad6e2;
+            --site-purple-strong: #a996ca;
+            --site-purple-soft: #f4effc;
+        }
+
         body {
-            background-color: #ffffff;
-            color: #000000;
+            background-color: var(--site-bg);
+            color: var(--site-text);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         }
 
         .navbar {
-            background-color: #f8f9fa !important;
-            border-bottom: 1px solid #dee2e6;
+            background-color: rgba(255, 250, 244, 0.92) !important;
+            border-bottom: 1px solid var(--site-border);
+            backdrop-filter: blur(12px);
         }
 
         .card {
-            background-color: #ffffff;
-            border-color: #dee2e6;
-            transition: all 0.3s ease;
-            cursor: pointer;
+            background-color: var(--site-surface);
+            border-color: var(--site-border);
+            border-radius: 1rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
         }
 
         .card:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             transform: translateY(-2px);
+            border-color: #dccbbf;
         }
 
+        .btn {
+            border-radius: 0.85rem;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background: var(--site-text);
+            border-color: var(--site-text);
+        }
+
+        .btn-primary:hover,
+        .btn-primary:focus {
+            background: #463f4e;
+            border-color: #463f4e;
+        }
+
+        .btn-secondary {
+            background: var(--site-purple-soft);
+            border-color: #e3d9f4;
+            color: #5d5076;
+        }
+
+        .btn-secondary:hover,
+        .btn-secondary:focus {
+            background: #ece4f8;
+            border-color: #d8caee;
+            color: #4e4366;
+        }
+
+       
+
         .page-link {
-            color: #000000;
-            background-color: #ffffff;
-            border-color: #dee2e6;
+            color: #413058;
+            background-color: var(--site-surface-strong);
+            border-color: #e1d3f3;
+            border-radius: 0.75rem;
         }
 
         .page-link:hover {
-            background-color: #6c757d;
-            border-color: #6c757d;
+            background-color: var(--site-purple);
+            border-color: var(--site-purple);
             color: white;
         }
 
         .page-item.active .page-link {
-            background-color: #6c757d;
-            border-color: #6c757d;
+            background-color: var(--site-purple-strong);
+            border-color: var(--site-purple-strong);
         }
 
         .form-control, .form-select {
-            background-color: #ffffff;
-            color: #000000;
-            border-color: #dee2e6;
+            background-color: var(--site-surface-strong);
+            color: var(--site-text);
+            border-color: #dccbbf;
+            border-radius: 0.85rem;
+            min-height: 3rem;
         }
 
         .form-control:focus, .form-select:focus {
-            background-color: #ffffff;
-            color: #000000;
-            border-color: #6c757d;
-            box-shadow: 0 0 0 0.2rem rgba(108, 117, 125, 0.25);
+            background-color: var(--site-surface-strong);
+            color: var(--site-text);
+            border-color: var(--site-purple);
+        }
+
+        .brand-mark {
+            width: 42px;
+            height: 42px;
+            object-fit: contain;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-logo {
+            width: min(240px, 60vw);
+            height: auto;
+            object-fit: contain;
+        }
+
+        .surface-panel {
+            background: var(--site-surface);
+            border: 1px solid var(--site-border);
+            border-radius: 1rem;
+            overflow: visible;
+        }
+
+        .text-muted {
+            color: var(--site-muted) !important;
+        }
+
+        /* Ensure dropdowns appear below select elements */
+        .form-select {
+            position: relative;
+            z-index: 1;
+        }
+
+        .row.g-3 {
+            overflow: visible;
+        }
+
+        .row.g-3 > * {
+            overflow: visible;
+        }
+
+        footer {
+            background-color: var(--site-surface);
+            border-top: 1px solid var(--site-border);
+            color: var(--site-muted);
+            text-align: right;
+            padding: 0.75rem 1rem;
+            margin-top: 3rem;
+            font-size: 0.85rem;
+        }
+
+        /* Dropdown positioning improvements */
+        .collapse {
+            overflow: visible !important;
+        }
+
+        .col-md-4 {
+            position: relative;
+        }
+
+        .form-select {
+            position: relative;
+            z-index: 1000;
         }
     </style>
 </head>
 <body>
-    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light sticky-top">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{% url 'lookup:index' %}">tjSTAR</a>
+            <a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'lookup:index' %}">
+                <img src="{% static 'images/tjstar.png' %}" alt="tjSTAR logo" class="brand-mark">
+                <span>tjSTAR</span>
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -76,6 +200,9 @@
                         <a class="nav-link" href="{% url 'lookup:index' %}">Home</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="{% url 'lookup:schedule' %}">Schedule</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{% url 'lookup:presentations' %}">Presentations</a>
                     </li>
                 </ul>
@@ -83,12 +210,18 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
     <main class="container my-5">
         {% block content %}{% endblock %}
     </main>
 
-    <!-- Bootstrap JS -->
+    {% block footer %}
+    <footer>
+        <div class="container">
+            <p class="mb-0">Website developed by Samuel Chow</p>
+        </div>
+    </footer>
+    {% endblock %}
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

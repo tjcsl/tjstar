@@ -136,6 +136,8 @@ USE_TZ = True
 
 STATIC_URL = '/tjstar/static/'
 STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_DIRS = [BASE_DIR / "tjstar/static"]
+
 
 FORCE_SCRIPT_NAME = "/tjstar"
 USE_X_FORWARDED_HOST = True

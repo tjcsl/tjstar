@@ -3,6 +3,7 @@ from django.utils import timezone
 from faker import Faker
 import random
 import datetime
+from django.db import transaction
 from ...models import Presentation, TimeSlot
 
 
@@ -14,24 +15,26 @@ class Command(BaseCommand):
         self.fake = Faker()
 
     def handle(self, *args, **options):
-        self.stdout.write('Creating TimeSlots...')
-        time_slots_data = [
-            {'block': 'A', 'start_time': '09:00', 'end_time': '10:00'},
-            {'block': 'B', 'start_time': '10:00', 'end_time': '11:00'},
-            {'block': 'C', 'start_time': '11:00', 'end_time': '12:00'},
-            {'block': 'D', 'start_time': '13:00', 'end_time': '14:00'},
-        ]
-        
-        for ts_data in time_slots_data:
-            TimeSlot.objects.get_or_create(
-                block=ts_data['block'],
-                defaults={
-                    'start_time': datetime.time.fromisoformat(ts_data['start_time']),
-                    'end_time': datetime.time.fromisoformat(ts_data['end_time']),
-                }
-            )
-        
-        self.stdout.write('TimeSlots created.')
+        with transaction.atomic():
+            Presentation.objects.all().delete()
+            TimeSlot.objects.all().delete()
+
+            self.stdout.write('Creating TimeSlots...')
+            time_slots_data = [
+                {'block': 'A', 'start_time': '09:00', 'end_time': '10:00'},
+                {'block': 'B', 'start_time': '10:00', 'end_time': '11:00'},
+                {'block': 'C', 'start_time': '11:00', 'end_time': '12:00'},
+                {'block': 'D', 'start_time': '13:00', 'end_time': '14:00'},
+            ]
+
+            for ts_data in time_slots_data:
+                TimeSlot.objects.create(
+                    block=ts_data['block'],
+                    start_time=datetime.time.fromisoformat(ts_data['start_time']),
+                    end_time=datetime.time.fromisoformat(ts_data['end_time']),
+                )
+
+            self.stdout.write('TimeSlots created.')
 
         category_templates = {
             'astro': {
@@ -124,7 +127,6 @@ class Command(BaseCommand):
             }
         }
 
-        # Generate presentations for each category
         categories = [code for code, _ in Presentation.CATEGORY_CHOICES]
         timeslots = list(TimeSlot.objects.all())
 
@@ -132,9 +134,9 @@ class Command(BaseCommand):
 
         for category_code in categories:
             self.stdout.write(f'Processing category: {category_code}')
-            
+
             templates = category_templates.get(category_code, category_templates['cs'])
-            
+
             for i in range(30):
                 num_authors = random.randint(1, 4)
                 authors = [self.fake.name() for _ in range(num_authors)]
@@ -145,17 +147,14 @@ class Command(BaseCommand):
                     self.fake.word() if '{}' in title_template[title_template.index('{}')+2:] else ''
                 ).strip()
 
-                
                 abstract = self.fake.paragraph(nb_sentences=5)
 
-                # Generate other fields
                 external_mentor = self.fake.name()
                 secondary_director = self.fake.name()
                 external_mentor_institute = self.fake.company()
                 room_number = str(random.randint(100, 500))
                 timeslot = random.choice(timeslots)
 
-                # Create presentation
                 Presentation.objects.create(
                     authors=authors,
                     title=title,

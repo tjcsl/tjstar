@@ -1,22 +1,104 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Home - tjSTAR{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-lg-8">
-        <h1 class="display-4 mb-4">Welcome to tjSTAR</h1>
-        <p class="lead">
+<style>
+    .hero-intro {
+        max-width: 34rem;
+        margin: 0 auto;
+    }
+
+    .countdown-inline {
+        font-variant-numeric: tabular-nums;
+        letter-spacing: 0.02em;
+        font-size: clamp(1rem, 1.6vw, 1.25rem);
+        font-weight: 400;
+        color: #6c637b;
+        background: rgba(243, 242, 246, 0.92);
+        border: 1px solid #e3d9f4;
+        border-radius: 10px;
+        padding: 0.7rem 1rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .countdown-date {
+        font-size: 0.95rem;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+    }
+
+    .countdown-wrap {
+        margin-top: -0.25rem;
+        margin-bottom: 1rem;
+    }
+</style>
+<div class="row justify-content-center text-center">
+    <div class="col-lg-8 col-xl-7 hero-intro">
+        <img src="{% static 'images/tjstar.png' %}" alt="tjSTAR logo" class="hero-logo mb-4">
+        <h1 class="display-4 fw-bold mb-3">Welcome to TJStar</h1>
+        <div class="countdown-wrap">
+            <p class="countdown-date text-muted mb-2">May 20, 2026 at 8:40 AM ET</p>
+            <p id="tjstarCountdown" class="countdown-inline mb-0" data-countdown-target="2026-05-20T08:40:00-04:00">
+                Loading countdown...
+            </p>
+        </div>
+        <p class="lead mb-4">
             Official website of the Thomas Jefferson Symposium to Advance Research
         </p>
-        <p>
+        <p class="mb-4">
             This website contains a catalog of all tjSTAR presentations for the current school year, allowing you to more easily find and explore the presentations you want to visit.
         </p>
         <p class="mt-4">
-            <a href="{% url 'lookup:presentations' %}" class="btn btn-lg btn-primary">
+            <a href="{% url 'lookup:presentations' %}" class="btn btn-lg btn-primary px-4">
                 Explore Presentations
             </a>
         </p>
+        
+        <div class="mt-5 pt-4 border-top" style="border-color: #e3d9f4 !important;">
+            <h5 class="mb-3 text-muted">Event Schedule</h5>
+            <ul class="ps-3 mb-0 text-start" style="font-size: 0.95rem; line-height: 1.8;">
+                <li class="mb-2"><strong>8:40 - 9:50 AM:</strong> Keynote Address</li>
+                <li class="mb-2"><strong>10:00 - 10:45 AM:</strong> Block A</li>
+                <li class="mb-2"><strong>10:55 - 11:40 AM:</strong> Block B</li>
+                <li class="mb-2"><strong>11:50 - 12:35 PM:</strong> Block C</li>
+                <li class="mb-0"><strong>12:35 - 1:25 PM:</strong> Lunch</li>
+            </ul>
+        </div>
     </div>
 </div>
+<script>
+    (function () {
+        const countdown = document.getElementById('tjstarCountdown');
+        if (!countdown) {
+            return;
+        }
+
+        const targetDate = new Date(countdown.dataset.countdownTarget);
+
+        function updateCountdown() {
+            const now = new Date();
+            const distance = targetDate.getTime() - now.getTime();
+
+            if (distance <= 0) {
+                countdown.textContent = 'TJSTAR is live';
+                return;
+            }
+
+            const totalSeconds = Math.floor(distance / 1000);
+            const days = Math.floor(totalSeconds / 86400);
+            const hours = Math.floor((totalSeconds % 86400) / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+
+            countdown.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s until TJSTAR`;
+        }
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    })();
+</script>
 {% endblock %}
