@@ -26,3 +26,4 @@ urlpatterns = [
     path('', include('tjstar.apps.adminpanel.urls', namespace='adminpanel')),
     path('', include('social_django.urls', namespace='social')),
 ]
+#test
